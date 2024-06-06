@@ -89,29 +89,44 @@ public class FirebaseAnalyticsPlugin extends ReflectiveCordovaPlugin {
 
     @CordovaMethod
     protected void getSessionId(CordovaArgs args, CallbackContext callbackContext) throws JSONException {
-        // Retrieve the session ID from Firebase Analytics
         Task<Long> sessionIdTask = firebaseAnalytics.getSessionId();
-        // Attach listeners to handle the result of the task
         sessionIdTask.addOnSuccessListener(new OnSuccessListener<Long>() {
             @Override
             public void onSuccess(Long sessionId) {
-                // Check if the sessionId is null and handle it appropriately
                 if (sessionId != null) {
-                    // Pass the session ID to the callback context
                     callbackContext.success(sessionId.toString());
                 } else {
-                    // If sessionId is null, return an appropriate message
                     callbackContext.success("null");
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                // Handle the error and pass an error message to the callback context
                 callbackContext.error("Failed to retrieve session ID: " + e.getMessage());
             }
         });        
     }
+
+    @CordovaMethod
+    protected void getAppInstanceId(CordovaArgs args, CallbackContext callbackContext) throws JSONException {
+        Task<String> appInstanceIdTask = firebaseAnalytics.getAppInstanceId();
+        appInstanceIdTask.addOnSuccessListener(new OnSuccessListener<String>() {
+            @Override
+            public void onSuccess(String appInstanceId) {
+                if (appInstanceId != null) {
+                    callbackContext.success(appInstanceId.toString());
+                } else {
+                    callbackContext.success("null");
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                callbackContext.error("Failed to retrieve App Instance ID: " + e.getMessage());
+            }
+        });        
+    }
+        
 
     private static Bundle parse(JSONObject params) throws JSONException {
         Bundle bundle = new Bundle();
