@@ -65,6 +65,13 @@ public class FirebaseAnalyticsPlugin extends ReflectiveCordovaPlugin {
     }
 
     @CordovaMethod
+    protected void setAnalyticsCollectionEnabled(CordovaArgs args, CallbackContext callbackContext) throws JSONException {
+        boolean enabled = args.getBoolean(0);
+        firebaseAnalytics.setAnalyticsCollectionEnabled(enabled);
+        callbackContext.success();
+    }
+
+    @CordovaMethod
     protected void setEnabled(CordovaArgs args, CallbackContext callbackContext) throws JSONException {
         boolean enabled = args.getBoolean(0);
         firebaseAnalytics.setAnalyticsCollectionEnabled(enabled);
