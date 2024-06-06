@@ -141,10 +141,25 @@ exports.getAppInstanceId =
  * @returns {Promise<void>} Retrieves the app instance id from the service, or null if ANALYTICS_STORAGE has been set to DENIED.
  *
  * @example
- * cordova.plugins.firebase.analytics.getSessionId();
+ * cordova.plugins.firebase.analytics.getAppInstanceId();
  */
 function() {
     return new Promise(function(resolve, reject) {
         exec(resolve, reject, PLUGIN_NAME, "getAppInstanceId", []);
+    });
+};
+
+exports.setAnalyticsCollectionEnabled =
+/**
+ * Sets whether analytics collection is enabled for this app on this device. This setting is persisted across app sessions. By default it is enabled.
+ *
+ * @returns {Promise<void>} Callback when operation is completed
+ *
+ * @example
+ * cordova.plugins.firebase.analytics.setAnalyticsCollectionEnabled();
+ */
+function() {
+    return new Promise(function(resolve, reject) {
+        exec(resolve, reject, PLUGIN_NAME, "setAnalyticsCollectionEnabled", []);
     });
 };
