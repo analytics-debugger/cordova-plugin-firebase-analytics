@@ -117,3 +117,18 @@ function(defaults) {
         exec(resolve, reject, PLUGIN_NAME, "setDefaultEventParameters", [defaults || {}]);
     });
 };
+
+exports.getSessionId =
+/**
+ * Clears all analytics data for this instance from the device and resets the app instance ID.
+ *
+ * @returns {Promise<void>} Returns the session id from the client. Returns null if ANALYTICS_STORAGE has been set to DENIED or session is expired.
+ *
+ * @example
+ * cordova.plugins.firebase.analytics.getSessionId();
+ */
+function() {
+    return new Promise(function(resolve, reject) {
+        exec(resolve, reject, PLUGIN_NAME, "getSessionId", []);
+    });
+};
