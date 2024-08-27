@@ -9,5 +9,7 @@
 - (void)setCurrentScreen:(CDVInvokedUrlCommand*)command;
 - (void)resetAnalyticsData:(CDVInvokedUrlCommand*)command;
 - (void)setDefaultEventParameters:(CDVInvokedUrlCommand*)command;
-
+- (void)getSessionId:(CDVInvokedUrlCommand*)command;
+- (void)getAppInstanceId:(CDVInvokedUrlCommand*)command;
+- (void)setConsent:(CDVInvokedUrlCommand*)command;
 @end

@@ -78,4 +78,77 @@
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
+- (void)getSessionId:(CDVInvokedUrlCommand *)command {
+    NSString *sessionId = [FIRAnalytics sessionID];
+
+    CDVPluginResult *pluginResult;
+    if (sessionId != nil) {
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:sessionId];
+    } else {
+        // Return null if session ID is not available
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:nil];
+    }
+
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+- (void)getAppInstanceId:(CDVInvokedUrlCommand *)command {
+    NSString *appInstanceId = [FIRAnalytics getAppInstanceId];
+
+    CDVPluginResult *pluginResult;
+    if (appInstanceId != nil) {
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:appInstanceId];
+    } else {
+        // Return null if session ID is not available
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:nil];
+    }
+
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+
+- (void)setConsent:(CDVInvokedUrlCommand *)command {
+    NSDictionary *consentSettings = [command.arguments objectAtIndex:0];
+    NSMutableDictionary<FIRConsentType, FIRConsentStatus> *consentMap = [NSMutableDictionary dictionary];
+
+    // Define valid consent types and statuses
+    NSDictionary<NSString *, NSNumber *> *validConsentTypes = @{
+        @"ANALYTICS_STORAGE": @(FIRConsentTypeAnalyticsStorage),
+        @"AD_STORAGE": @(FIRConsentTypeAdStorage),
+        @"AD_USER_DATA": @(FIRConsentTypeAdUserData),
+        @"AD_PERSONALIZATION": @(FIRConsentTypeAdPersonalization)
+    };
+
+    NSDictionary<NSString *, NSNumber *> *validConsentStatuses = @{
+        @"GRANTED": @(FIRConsentStatusGranted),
+        @"DENIED": @(FIRConsentStatusDenied)
+    };
+
+    for (NSString *key in consentSettings) {
+        NSString *status = [consentSettings[key] uppercaseString];
+
+        if (![validConsentTypes objectForKey:[key uppercaseString]]) {
+            CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:[NSString stringWithFormat:@"Invalid consent type: %@", key]];
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+            return;
+        }
+
+        if (![validConsentStatuses objectForKey:status]) {
+            CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:[NSString stringWithFormat:@"Invalid consent status for type %@: %@", key, status]];
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+            return;
+        }
+
+        FIRConsentType consentType = [validConsentTypes[[key uppercaseString]] integerValue];
+        FIRConsentStatus consentStatus = [validConsentStatuses[status] integerValue];
+
+        [consentMap setObject:@(consentStatus) forKey:@(consentType)];
+    }
+
+    [FIRAnalytics setConsent:consentMap];
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"Consent settings updated"];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+
 @end

@@ -139,7 +139,7 @@ public class FirebaseAnalyticsPlugin extends ReflectiveCordovaPlugin {
     @CordovaMethod
     protected void setConsent(CordovaArgs args, CallbackContext callbackContext) throws JSONException {
         JSONObject consentSettings = args.getJSONObject(0);
-        Map<FirebaseAnalytics.ConsentType, FirebaseAnalytics.ConsentStatus> consentMap = new HashMap<>();
+        Map<FirebaseAnalytics.ConsentType, FirebaseAnalytics.ConsentStatus> consentMap = new EnumMap<>(FirebaseAnalytics.ConsentType.class);
 
         // Define valid consent types and statuses
         Map<String, FirebaseAnalytics.ConsentType> validConsentTypes = new HashMap<>();
@@ -174,6 +174,7 @@ public class FirebaseAnalyticsPlugin extends ReflectiveCordovaPlugin {
         }
 
         firebaseAnalytics.setConsent(consentMap);
+        callbackContext.error("Consent settings updated", consentMap);
         callbackContext.success();
     }
 
