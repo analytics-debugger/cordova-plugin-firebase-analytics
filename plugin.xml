@@ -28,7 +28,6 @@ xmlns:android="http://schemas.android.com/apk/res/android"
     <preference name="GOOGLE_ANALYTICS_DEFAULT_ALLOW_AD_USER_DATA" default="false" />
     <preference name="GOOGLE_ANALYTICS_DEFAULT_ALLOW_AD_PERSONALIZATION_SIGNALS" default="false" />
 
-
     <platform name="ios">
         <preference name="IOS_FIREBASE_POD_VERSION" default="10.17.0" />
 
@@ -49,7 +48,19 @@ xmlns:android="http://schemas.android.com/apk/res/android"
         <config-file target="*-Info.plist" parent="FirebaseAutomaticScreenReportingEnabled">
             <string>$AUTOMATIC_SCREEN_REPORTING_ENABLED</string>
         </config-file>
-
+        <config-file target="*-Info.plist" parent="GOOGLE_ANALYTICS_DEFAULT_ALLOW_ANALYTICS_STORAGE">
+            <string>false</string>
+        </config-file>
+        <config-file target="*-Info.plist" parent="GOOGLE_ANALYTICS_DEFAULT_ALLOW_AD_STORAGE">
+            <string>false</string>
+        </config-file>
+        <config-file target="*-Info.plist" parent="GOOGLE_ANALYTICS_DEFAULT_ALLOW_AD_USER_DATA">
+            <string>false</string>
+        </config-file>
+        <config-file target="*-Info.plist" parent="FirebaseAutomaticScreenReportingEnabled">
+            <string>false</string>
+        </config-file>            
+                    
         <header-file src="src/ios/FirebaseAnalyticsPlugin.h" />
         <source-file src="src/ios/FirebaseAnalyticsPlugin.m" />
 
