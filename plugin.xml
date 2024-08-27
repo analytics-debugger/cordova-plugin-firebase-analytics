@@ -22,6 +22,12 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 
     <preference name="ANALYTICS_COLLECTION_ENABLED" default="false" />
     <preference name="AUTOMATIC_SCREEN_REPORTING_ENABLED" default="false" />
+    
+    <preference name="GOOGLE_ANALYTICS_DEFAULT_ALLOW_ANALYTICS_STORAGE" default="false" />
+    <preference name="GOOGLE_ANALYTICS_DEFAULT_ALLOW_AD_STORAGE" default="false" />
+    <preference name="GOOGLE_ANALYTICS_DEFAULT_ALLOW_AD_USER_DATA" default="false" />
+    <preference name="GOOGLE_ANALYTICS_DEFAULT_ALLOW_AD_PERSONALIZATION_SIGNALS" default="false" />
+
 
     <platform name="ios">
         <preference name="IOS_FIREBASE_POD_VERSION" default="10.17.0" />
