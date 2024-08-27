@@ -17,6 +17,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.HashMap;
+import java.util.Map;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -133,7 +135,48 @@ public class FirebaseAnalyticsPlugin extends ReflectiveCordovaPlugin {
             }
         });        
     }
-        
+    
+    @CordovaMethod
+    protected void setConsent(CordovaArgs args, CallbackContext callbackContext) throws JSONException {
+        JSONObject consentSettings = args.getJSONObject(0);
+        Map<FirebaseAnalytics.ConsentType, FirebaseAnalytics.ConsentStatus> consentMap = new HashMap<>();
+
+        // Define valid consent types and statuses
+        Map<String, FirebaseAnalytics.ConsentType> validConsentTypes = new HashMap<>();
+        validConsentTypes.put("ANALYTICS_STORAGE", FirebaseAnalytics.ConsentType.ANALYTICS_STORAGE);
+        validConsentTypes.put("AD_STORAGE", FirebaseAnalytics.ConsentType.AD_STORAGE);
+        validConsentTypes.put("AD_USER_DATA", FirebaseAnalytics.ConsentType.AD_USER_DATA);
+        validConsentTypes.put("AD_PERSONALIZATION", FirebaseAnalytics.ConsentType.AD_PERSONALIZATION);
+
+        Map<String, FirebaseAnalytics.ConsentStatus> validConsentStatuses = new HashMap<>();
+        validConsentStatuses.put("GRANTED", FirebaseAnalytics.ConsentStatus.GRANTED);
+        validConsentStatuses.put("DENIED", FirebaseAnalytics.ConsentStatus.DENIED);
+
+        Iterator<String> keys = consentSettings.keys();
+        while (keys.hasNext()) {
+            String key = keys.next();
+            String status = consentSettings.getString(key).toUpperCase();
+
+            if (!validConsentTypes.containsKey(key.toUpperCase())) {
+                callbackContext.error("Invalid consent type: " + key);
+                return;
+            }
+
+            if (!validConsentStatuses.containsKey(status)) {
+                callbackContext.error("Invalid consent status for type " + key + ": " + status);
+                return;
+            }
+
+            FirebaseAnalytics.ConsentType consentType = validConsentTypes.get(key.toUpperCase());
+            FirebaseAnalytics.ConsentStatus consentStatus = validConsentStatuses.get(status);
+
+            consentMap.put(consentType, consentStatus);
+        }
+
+        firebaseAnalytics.setConsent(consentMap);
+        callbackContext.success();
+    }
+
 
     private static Bundle parse(JSONObject params) throws JSONException {
         Bundle bundle = new Bundle();

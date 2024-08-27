@@ -90,7 +90,7 @@ function(enabled) {
 exports.setCurrentScreen =
 /**
  * Sets the current screen name, which specifies the current visual context in your app. This helps identify the areas in your app where users spend their time and how they interact with your app.
- *
+ * 
  * @param {string} screenName Current screen name
  * @returns {Promise<void>} Callback when operation is completed
  *
@@ -161,5 +161,26 @@ exports.setAnalyticsCollectionEnabled =
 function() {
     return new Promise(function(resolve, reject) {
         exec(resolve, reject, PLUGIN_NAME, "setAnalyticsCollectionEnabled", []);
+    });
+};
+
+exports.setConsent =
+/**
+ * Sets the applicable end user consent state (e.g., for device identifiers) for this app on this device. Use the consent map to specify individual consent type values. Settings are persisted across app sessions.
+ *
+ * @param {Object} consentSettings - A map of consent types and their statuses.
+ * @returns {Promise<void>} Callback when the operation is completed.
+ *
+ * @example
+ * cordova.plugins.firebase.analytics.setConsent({
+ *     ANALYTICS_STORAGE: 'granted',
+ *     AD_STORAGE: 'denied',
+ *     AD_USER_DATA: 'denied',
+ *     AD_PERSONALIZATION: 'denied'
+ * });
+ */
+function(consentSettings) {
+    return new Promise(function(resolve, reject) {
+        exec(resolve, reject, PLUGIN_NAME, "setConsent", [consentSettings]);
     });
 };
