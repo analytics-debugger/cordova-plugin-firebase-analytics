@@ -113,15 +113,15 @@
 
     // Define valid consent types and statuses
     NSDictionary<NSString *, NSNumber *> *validConsentTypes = @{
-        @"ANALYTICS_STORAGE": @(FIRConsentTypeAnalyticsStorage),
-        @"AD_STORAGE": @(FIRConsentTypeAdStorage),
-        @"AD_USER_DATA": @(FIRConsentTypeAdUserData),
-        @"AD_PERSONALIZATION": @(FIRConsentTypeAdPersonalization)
+        @"ANALYTICS_STORAGE": @((NSInteger)FIRConsentTypeAnalyticsStorage),
+        @"AD_STORAGE": @((NSInteger)FIRConsentTypeAdStorage),
+        @"AD_USER_DATA": @((NSInteger)FIRConsentTypeAdUserData),          // New valid type
+        @"AD_PERSONALIZATION": @((NSInteger)FIRConsentTypeAdPersonalization)  // New valid type
     };
 
     NSDictionary<NSString *, NSNumber *> *validConsentStatuses = @{
-        @"GRANTED": @(FIRConsentStatusGranted),
-        @"DENIED": @(FIRConsentStatusDenied)
+        @"GRANTED": @((NSInteger)FIRConsentStatusGranted),
+        @"DENIED": @((NSInteger)FIRConsentStatusDenied)
     };
 
     for (NSString *key in consentSettings) {
@@ -138,9 +138,9 @@
             [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
             return;
         }
-
-        FIRConsentType consentType = [validConsentTypes[[key uppercaseString]] integerValue];
-        FIRConsentStatus consentStatus = [validConsentStatuses[status] integerValue];
+       
+        FIRConsentType consentType = (FIRConsentType)[[validConsentTypes[[key uppercaseString]] integerValue]];
+        FIRConsentStatus consentStatus = (FIRConsentStatus)[[validConsentStatuses[status] integerValue]];   
 
         [consentMap setObject:@(consentStatus) forKey:@(consentType)];
     }

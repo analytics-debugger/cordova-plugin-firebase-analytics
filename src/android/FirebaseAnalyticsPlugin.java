@@ -3,6 +3,8 @@ package by.chemerisuk.cordova.firebase;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import java.util.EnumMap;  // Add this line
+
 
 import by.chemerisuk.cordova.support.CordovaMethod;
 import by.chemerisuk.cordova.support.ReflectiveCordovaPlugin;
@@ -174,7 +176,6 @@ public class FirebaseAnalyticsPlugin extends ReflectiveCordovaPlugin {
         }
 
         firebaseAnalytics.setConsent(consentMap);
-        callbackContext.error("Consent settings updated", consentMap);
         callbackContext.success();
     }
 
